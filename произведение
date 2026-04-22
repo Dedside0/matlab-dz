@@ -1,0 +1,17 @@
+clear
+clc;
+n = 4
+m = 3
+p = 5
+A = randi(10,n,p)
+B = randi(10,p,m)
+C = zeros(n,m)
+for i=1:n
+    for j=1:m 
+        for k=1:p
+            C(i,j) =C (i,j)+ A(i,k)*B(k,j);
+        end
+    end
+end
+C
+A*B
