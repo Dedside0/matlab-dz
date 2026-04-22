@@ -1,0 +1,14 @@
+clc;
+size = 6;
+x = randi(10,size);
+extended = [x';eye(size)]'
+for i = 1:size
+    extended(i,:) = extended(i,:) * 1/extended(i,i);
+    for j = 1:size
+        if(j~=i)
+            extended(j,:) = extended(j,:) - extended(i,:)*extended(j,i);
+        end
+    end
+end
+extended
+inv(x)
