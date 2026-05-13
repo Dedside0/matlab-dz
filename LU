@@ -1,0 +1,37 @@
+A = [2, 1, 1; 
+     4, 3, 3; 
+     8, 7, 9];
+
+[rows, cols] = size(A);
+n = rows;
+
+
+L = zeros(n, n);
+U = zeros(n, n);
+
+
+for i = 1:n
+    L(i,i) = 1;
+end
+
+U = A;
+
+for k = 1:n-1
+    for i = k+1:n
+        
+        factor = U(i,k) / U(k,k);
+        L(i,k) = factor;
+        
+        for j = k:n
+            U(i,j) = U(i,j) - factor * U(k,j);
+        end
+    end
+end
+
+
+disp('Матрица L:');
+disp(L);
+disp('Матрица U:');
+disp(U);
+disp('Проверка равенства (L * U):');
+disp(L * U); 
