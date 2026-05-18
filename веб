@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ElectroStore</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f3f5f9;
+            color: #222;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .container-custom {
+            width: 92%;
+            max-width: 1500px;
+            margin: auto;
+        }
+
+        /* HEADER */
+
+        header {
+            background: white;
+            border-bottom: 1px solid #ddd;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: bold;
+            color: #2563eb;
+            min-width: 220px;
+        }
+
+        .search-box {
+            flex: 1;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-box input {
+            width: 100%;
+            height: 46px;
+            border: none;
+            background: #eef2ff;
+            border-radius: 12px 0 0 12px;
+            padding: 0 15px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .search-box button {
+            width: 60px;
+            height: 46px;
+            border: none;
+            background: #2563eb;
+            color: white;
+            border-radius: 0 12px 12px 0;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .cart-btn {
+            position: relative;
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px 18px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 24px;
+            height: 24px;
+            background: red;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+        }
+
+        /* BANNER */
+
+        .banner {
+            margin-top: 25px;
+        }
+
+        .carousel-item {
+            height: 500px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 25px;
+        }
+
+        .carousel-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(55%);
+        }
+
+        .banner-text {
+            position: absolute;
+            top: 50%;
+            left: 8%;
+            transform: translateY(-50%);
+            color: white;
+        }
+
+        .banner-text h1 {
+            font-size: 58px;
+            margin-bottom: 20px;
+        }
+
+        .banner-text p {
+            font-size: 22px;
+            margin-bottom: 25px;
+        }
+
+        .banner-btn {
+            display: inline-block;
+            background: #2563eb;
+            padding: 14px 28px;
+            border-radius: 12px;
+            color: white;
+        }
+
+        /* MAIN */
+
+        .main-layout {
+            display: flex;
+            gap: 30px;
+            padding: 50px 0;
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            width: 280px;
+            min-width: 280px;
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            height: fit-content;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .sidebar h2 {
+            margin-bottom: 25px;
+            font-size: 28px;
+        }
+
+        .category-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .category-btn {
+            border: none;
+            background: #eef2ff;
+            padding: 14px;
+            border-radius: 12px;
+            text-align: left;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 16px;
+        }
+
+        .category-btn:hover {
+            background: #2563eb;
+            color: white;
+        }
+
+        /* PRODUCTS */
+
+        .content {
+            flex: 1;
+        }
+
+        .section-title {
+            font-size: 38px;
+            margin-bottom: 30px;
+        }
+
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 25px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.07);
+            transition: 0.25s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+        }
+
+        .product-image {
+            height: 240px;
+            overflow: hidden;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-category {
+            color: #2563eb;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .product-title {
+            font-size: 22px;
+            margin-bottom: 12px;
+        }
+
+        .product-description {
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            min-height: 70px;
+        }
+
+        .product-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .price {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+        .buy-btn {
+            border: none;
+            background: #2563eb;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        /* CART */
+
+        .cart-panel {
+            position: fixed;
+            top: 0;
+            right: -450px;
+            width: 420px;
+            height: 100vh;
+            background: white;
+            box-shadow: -5px 0 25px rgba(0, 0, 0, 0.15);
+            transition: 0.3s;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cart-panel.active {
+            right: 0;
+        }
+
+        .cart-header {
+            padding: 25px;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .close-cart {
+            border: none;
+            background: none;
+            font-size: 28px;
+            cursor: pointer;
+        }
+
+        .cart-items {
+            flex: 1;
+            overflow: auto;
+            padding: 20px;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-total {
+            padding: 25px;
+            border-top: 1px solid #ddd;
+        }
+
+        .total-price {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            height: 50px;
+            border: none;
+            background: #2563eb;
+            color: white;
+            border-radius: 12px;
+            font-size: 17px;
+            cursor: pointer;
+        }
+
+        .remove-btn {
+            border: none;
+            background: red;
+            color: white;
+            padding: 7px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        /* FOOTER */
+
+        footer {
+            background: #111827;
+            color: white;
+            margin-top: 40px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            padding: 60px 0;
+        }
+
+        .footer-column h3 {
+            margin-bottom: 20px;
+        }
+
+        .footer-column p,
+        .footer-column a {
+            color: #cbd5e1;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            padding: 20px;
+            color: #94a3b8;
+        }
+
+        @media(max-width:1000px) {
+
+            .main-layout {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+            }
+
+            .header-content {
+                flex-wrap: wrap;
+                height: auto;
+                padding: 20px 0;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+        }
+
+        @media(max-width:600px) {
+
+            .banner-text h1 {
+                font-size: 36px;
+            }
+
+            .banner-text p {
+                font-size: 18px;
+            }
+
+            .cart-panel {
+                width: 100%;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <header>
+        <div class="container-custom">
+            <div class="header-content">
+                <div class="logo">
+                    ElectroStore
+                </div>
+
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Поиск товаров...">
+                    <button>🔍</button>
+                </div>
+
+                <div class="header-right">
+
+                    <button class="cart-btn" id="openCart">
+                        🛒 Корзина
+                        <span class="cart-count" id="cartCount">0</span>
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+    <section class="banner container-custom">
+        <div id="mainBanner" class="carousel slide" data-bs-ride="carousel">
+
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#mainBanner" data-bs-slide-to="0" class="active"></button>
+                <button type="button" data-bs-target="#mainBanner" data-bs-slide-to="1"></button>
+                <button type="button" data-bs-target="#mainBanner" data-bs-slide-to="2"></button>
+            </div>
+
+            <div class="carousel-inner">
+
+                <div class="carousel-item active">
+                    <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=1600&auto=format&fit=crop"
+                        alt="">
+                    <div class="banner-text">
+                        <h1>Новые смартфоны</h1>
+                        <p>Скидки до 30% на популярные модели</p>
+                        <a href="#" class="banner-btn">Смотреть товары</a>
+                    </div>
+                </div>
+
+                <div class="carousel-item">
+                    <img src="https://www.calltouch.ru/blog/wp-content/uploads/2019/01/kak-sdelat-banner-dlya-sajta-samostoyatelno.jpg"
+                        alt="">
+                    <div class="banner-text">
+                        <h1>Ноутбуки для работы</h1>
+                        <p>Мощные устройства для учебы и бизнеса</p>
+                        <a href="#" class="banner-btn">Перейти в каталог</a>
+                    </div>
+                </div>
+
+                <div class="carousel-item">
+                    <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1600&auto=format&fit=crop"
+                        alt="">
+                    <div class="banner-text">
+                        <h1>Игровые аксессуары</h1>
+                        <p>Клавиатуры, мышки и гарнитуры</p>
+                        <a href="#" class="banner-btn">Купить сейчас</a>
+                    </div>
+                </div>
+
+            </div>
+
+            <button class="carousel-control-prev" type="button" data-bs-target="#mainBanner" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon"></span>
+            </button>
+
+            <button class="carousel-control-next" type="button" data-bs-target="#mainBanner" data-bs-slide="next">
+                <span class="carousel-control-next-icon"></span>
+            </button>
+
+        </div>
+    </section>
+
+
+    <div class="container-custom">
+        <div class="main-layout">
+
+            <aside class="sidebar">
+
+                <h2>Категории</h2>
+
+                <div class="category-list">
+
+                    <button class="category-btn" data-category="all">
+                        Все товары
+                    </button>
+
+                    <button class="category-btn" data-category="Смартфоны">
+                        Смартфоны
+                    </button>
+
+                    <button class="category-btn" data-category="Ноутбуки">
+                        Ноутбуки
+                    </button>
+
+                    <button class="category-btn" data-category="Наушники">
+                        Наушники
+                    </button>
+
+                    <button class="category-btn" data-category="Игровые консоли">
+                        Игровые консоли
+                    </button>
+
+                    <button class="category-btn" data-category="Мониторы">
+                        Мониторы
+                    </button>
+
+                    <button class="category-btn" data-category="Умный дом">
+                        Умный дом
+                    </button>
+
+                </div>
+
+            </aside>
+
+            <!-- CONTENT -->
+
+            <main class="content">
+
+                <h1 class="section-title">
+                    Каталог товаров
+                </h1>
+
+                <div class="products" id="productsContainer">
+
+                </div>
+
+            </main>
+
+        </div>
+
+    </div>
+
+    <div class="cart-panel" id="cartPanel">
+
+        <div class="cart-header">
+            <h2>Корзина</h2>
+            <button class="close-cart" id="closeCart">
+                ×
+            </button>
+        </div>
+
+        <div class="cart-items" id="cartItems">
+
+        </div>
+
+        <div class="cart-total">
+
+            <div class="total-price">
+                Итого: $<span id="totalPrice">0</span>
+            </div>
+
+            <button class="checkout-btn">
+                Оформить заказ
+            </button>
+
+        </div>
+
+    </div>
+
+    <footer>
+
+        <div class="container-custom">
+
+            <div class="footer-content">
+
+                <div class="footer-column">
+                    <h3>ElectroStore</h3>
+                    <p>
+                        Интернет-магазин современной электроники.
+                    </p>
+                </div>
+
+                <div class="footer-column">
+                    <h3>Каталог</h3>
+                    <a href="#">Смартфоны</a>
+                    <a href="#">Ноутбуки</a>
+                    <a href="#">Наушники</a>
+                </div>
+
+                <div class="footer-column">
+                    <h3>Контакты</h3>
+                    <p>geor@pochta.com</p>
+                    <p>+1 (555) 767-67-67</p>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            © 2026 ElectroStore
+        </div>
+
+    </footer>
+
+    <script>
+
+        const products = [
+
+            {
+                id: 1,
+                title: "iPhone 16 Pro",
+                category: "Смартфоны",
+                price: 1299,
+                image: "https://images.unsplash.com/photo-1512499617640-c74ae3a79d37?q=80&w=1200&auto=format&fit=crop",
+                description: "Флагманский смартфон Apple."
+            },
+
+            {
+                id: 2,
+                title: "Samsung Galaxy Ultra",
+                category: "Смартфоны",
+                price: 1199,
+                image: "https://images.unsplash.com/photo-1598327105666-5b89351aff97?q=80&w=1200&auto=format&fit=crop",
+                description: "Android смартфон премиум класса."
+            },
+
+            {
+                id: 3,
+                title: "MacBook Pro",
+                category: "Ноутбуки",
+                price: 2299,
+                image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=1200&auto=format&fit=crop",
+                description: "Мощный ноутбук для профессионалов."
+            },
+
+            {
+                id: 4,
+                title: "ASUS ROG",
+                category: "Ноутбуки",
+                price: 1999,
+                image: "https://images.unsplash.com/photo-1603302576837-37561b2e2302?q=80&w=1200&auto=format&fit=crop",
+                description: "Игровой ноутбук с RTX."
+            },
+
+            {
+                id: 5,
+                title: "AirPods Max",
+                category: "Наушники",
+                price: 599,
+                image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1200&auto=format&fit=crop",
+                description: "Премиальные беспроводные наушники."
+            },
+
+            {
+                id: 6,
+                title: "Sony WH-1000XM5",
+                category: "Наушники",
+                price: 449,
+                image: "https://images.unsplash.com/photo-1484704849700-f032a568e944?q=80&w=1200&auto=format&fit=crop",
+                description: "Шумоподавление нового поколения."
+            },
+
+            {
+                id: 7,
+                title: "PlayStation 5",
+                category: "Игровые консоли",
+                price: 699,
+                image: "https://images.unsplash.com/photo-1546435770-a3e426bf472b?q=80&w=1200&auto=format&fit=crop",
+                description: "Консоль нового поколения."
+            },
+
+            {
+                id: 8,
+                title: "Xbox Series X",
+                category: "Игровые консоли",
+                price: 649,
+                image: "https://images.unsplash.com/photo-1621259182978-fbf93132d53d?q=80&w=1200&auto=format&fit=crop",
+                description: "Самая мощная Xbox."
+            },
+
+            {
+                id: 9,
+                title: "LG UltraWide",
+                category: "Мониторы",
+                price: 799,
+                image: "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?q=80&w=1200&auto=format&fit=crop",
+                description: "Ультраширокий монитор 4K."
+            },
+
+            {
+                id: 10,
+                title: "Smart Home Hub",
+                category: "Умный дом",
+                price: 299,
+                image: "https://images.unsplash.com/photo-1558002038-1055907df827?q=80&w=1200&auto=format&fit=crop",
+                description: "Управление умным домом."
+            }
+
+        ];
+
+        const productsContainer = document.getElementById("productsContainer");
+        const searchInput = document.getElementById("searchInput");
+
+        let currentCategory = "all";
+
+        function renderProducts() {
+
+            const search = searchInput.value.toLowerCase();
+
+            const filtered = products.filter(product => {
+
+                const matchCategory =
+                    currentCategory === "all" ||
+                    product.category === currentCategory;
+
+                const matchSearch =
+                    product.title.toLowerCase().includes(search);
+
+                return matchCategory && matchSearch;
+
+            });
+
+            productsContainer.innerHTML = "";
+
+            filtered.forEach(product => {
+
+                productsContainer.innerHTML += `
+                    <div class="product-card">
+
+                        <div class="product-image">
+                            <img src="${product.image}">
+                        </div>
+
+                        <div class="product-info">
+
+                            <div class="product-category">
+                                ${product.category}
+                            </div>
+
+                            <h3 class="product-title">
+                                ${product.title}
+                            </h3>
+
+                            <p class="product-description">
+                                ${product.description}
+                            </p>
+
+                            <div class="product-bottom">
+
+                                <div class="price">
+                                    $${product.price}
+                                </div>
+
+                                <button class="buy-btn" onclick="addToCart(${product.id})">
+                                    В корзину
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                `;
+
+            });
+
+        }
+
+        document.querySelectorAll(".category-btn")
+            .forEach(btn => {
+
+                btn.addEventListener("click", () => {
+
+                    currentCategory = btn.dataset.category;
+                    renderProducts();
+
+                });
+
+            });
+
+        searchInput.addEventListener("input", renderProducts);
+
+
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+        function saveCart() {
+            localStorage.setItem("cart", JSON.stringify(cart));
+        }
+
+        function addToCart(id) {
+            const product = products.find(x => x.id === id);
+            cart.push(product);
+            saveCart();
+            renderCart();
+
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            saveCart();
+            renderCart();
+
+        }
+
+        function renderCart() {
+
+            const cartItems = document.getElementById("cartItems");
+            const totalPrice = document.getElementById("totalPrice");
+            const cartCount = document.getElementById("cartCount");
+
+            cartItems.innerHTML = "";
+
+            let total = 0;
+
+            cart.forEach((item, index) => {
+
+                total += item.price;
+
+                cartItems.innerHTML += `
+                    <div class="cart-item">
+
+                        <div>
+                            <strong>${item.title}</strong>
+                            <div>$${item.price}</div>
+                        </div>
+
+                        <button class="remove-btn"
+                            onclick="removeFromCart(${index})">
+                            ×
+                        </button>
+
+                    </div>
+                `;
+
+            });
+
+            totalPrice.textContent = total;
+            cartCount.textContent = cart.length;
+
+        }
+
+        const cartPanel = document.getElementById("cartPanel");
+
+        document.getElementById("openCart")
+            .addEventListener("click", () => {
+
+                cartPanel.classList.add("active");
+
+            });
+
+        document.getElementById("closeCart")
+            .addEventListener("click", () => {
+
+                cartPanel.classList.remove("active");
+
+            });
+
+        renderProducts();
+        renderCart();
+
+    </script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>
